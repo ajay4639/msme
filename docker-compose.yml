@@ -1,0 +1,17 @@
+version: '3'
+services:
+  hsbc_msme:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    container_name: hsbc_msme
+    networks:
+      - hsbc_msme
+    ports:
+      - '3000:3000'
+    environment:
+     - HOST=0.0.0.0
+    command: npm run start
+networks:
+  hsbc_msme:
+    driver: bridge

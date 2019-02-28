@@ -1,0 +1,21 @@
+# Usage:
+#
+#    Build image:
+#    docker build -t hsbc_msme .
+#
+#    Run image (on localhost:8080):
+#    docker run --name hsbc_msme -p 8080:80 hsbc_msme
+#
+#    Run image as virtual host (read more: https://github.com/jwilder/nginx-proxy):
+#    docker run -e VIRTUAL_HOST=hsbc_msme.your-domain.com --name hsbc_msme hsbc_msme
+
+FROM node:8.9.4-alpine as builder
+
+COPY package.json ./
+
+## Storing node modules on a separate layer will prevent unnecessary npm installs at each build
+RUN npm i && mkdir /ng-app && mv ./node_modules ./ng-app
+
+WORKDIR /ng-app
+
+COPY . .
